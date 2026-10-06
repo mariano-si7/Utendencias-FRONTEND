@@ -1,0 +1,178 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  
+  /* Palette inspired by UTTT and original design screenshot */
+  --bg-main: #EFECE6;
+  --bg-card: #F5F4EF;
+  --bg-card-hover: #ECE9E2;
+  --bg-white: #FFFFFF;
+  
+  --color-primary: #1C5D3F;
+  --color-primary-hover: #154830;
+  --color-primary-light: #D8EADF;
+  --color-primary-accent: #B7DFCA;
+
+  --color-text-main: #1C2421;
+  --color-text-muted: #626A66;
+  --color-text-light: #8E9691;
+  --color-border: #E2DDD5;
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-full: 9999px;
+
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.03);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.06);
+
+  --sidebar-width: 250px;
+  --right-sidebar-width: 330px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg-main);
+  color: var(--color-text-main);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  outline: none;
+}
+
+input, textarea, select {
+  font-family: inherit;
+}
+
+/* App Layout Grid */
+.app-container {
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.main-content-layout {
+  display: grid;
+  grid-template-columns: var(--sidebar-width) 1fr var(--right-sidebar-width);
+  gap: 20px;
+  width: 100%;
+  padding-top: 16px;
+  padding-bottom: 24px;
+}
+
+@media (max-width: 1100px) {
+  .main-content-layout {
+    grid-template-columns: 80px 1fr var(--right-sidebar-width);
+  }
+}
+
+@media (max-width: 850px) {
+  .main-content-layout {
+    grid-template-columns: 1fr;
+  }
+  .left-sidebar, .right-sidebar {
+    display: none;
+  }
+}
+
+/* Common UI Elements */
+.card {
+  background-color: var(--bg-card);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  margin-bottom: 16px;
+  border: 1px solid var(--color-border);
+  transition: all 0.2s ease;
+}
+
+.card-white {
+  background-color: var(--bg-white);
+  border-radius: var(--radius-md);
+  padding: 16px;
+}
+
+.pill-btn {
+  background-color: var(--color-primary-light);
+  color: var(--color-primary);
+  border-radius: var(--radius-full);
+  padding: 10px 24px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.pill-btn:hover {
+  background-color: var(--color-primary-accent);
+}
+
+.pill-btn-solid {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.pill-btn-solid:hover {
+  background-color: var(--color-primary-hover);
+}
+
+.avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-primary-hover);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.95rem;
+  flex-shrink: 0;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: var(--radius-md);
+  font-size: 0.82rem;
+  font-weight: 600;
+  background-color: var(--bg-white);
+  color: var(--color-text-main);
+}
+
+.badge-green {
+  background-color: var(--color-primary-light);
+  color: var(--color-primary);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-text-light);
+  border-radius: 10px;
+}
