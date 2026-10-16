@@ -1,20 +1,21 @@
 import React, { useState } from 'react';
-import { Award, BookOpen, MessageSquare, ShieldCheck, MapPin, Calendar, Edit3 } from 'lucide-react';
+import { Award, BookOpen, MessageSquare, ShieldCheck, MapPin, Calendar, Edit3, LogOut } from 'lucide-react';
 import PostCard from './PostCard';
 
-export default function ProfileView({ userPosts, onPostClick }) {
+export default function ProfileView({ userPosts, onPostClick, currentUser, onLogout }) {
   const [activeTab, setActiveTab] = useState('publicaciones');
 
   const studentInfo = {
-    name: 'Mariano Calzadilla Alvarez',
-    handle: '@alumno_ut',
-    group: 'Grupo: 7ITIID - G3',
-    career: 'Ingeniería en Tecnologías de la Información',
+    name: currentUser?.name || 'Mariano Calzadilla Alvarez',
+    handle: currentUser?.handle || '@alumno_ut',
+    avatar: currentUser?.avatar || 'AL',
+    group: currentUser?.group ? `Grupo: ${currentUser.group}` : 'Grupo: 7ITIID - G3',
+    career: currentUser?.career || 'Ingeniería en Tecnologías de la Información',
     university: 'Universidad Tecnológica de Tula-Tepeji',
-    points: 480,
-    reputation: 'Tutor Destacado 🌟',
-    joined: 'Septiembre 2026',
-    team: ['Alan Cruz Reyes', 'Brandon Daniel Montoya Aldana', 'Yaretzi Hernández Alonso'],
+    points: currentUser?.points || 480,
+    reputation: currentUser?.reputation || 'Tutor Destacado 🌟',
+    joined: currentUser?.joined || 'Septiembre 2026',
+    team: ['Alan Cruz Reyes', 'Brandon Daniel Montoya Aldana', 'Mariano Calzadilla Alvarez', 'Yaretzi Hernández Alonso'],
   };
 
   return (
@@ -24,11 +25,19 @@ export default function ProfileView({ userPosts, onPostClick }) {
         <div className="profile-cover"></div>
         <div className="profile-content">
           <div className="profile-top-row">
-            <div className="avatar avatar-xl">AL</div>
-            <button className="pill-btn edit-profile-btn">
-              <Edit3 size={16} />
-              <span>Editar Perfil</span>
-            </button>
+            <div className="avatar avatar-xl">{studentInfo.avatar}</div>
+            <div className="profile-actions-row">
+              <button className="pill-btn edit-profile-btn">
+                <Edit3 size={16} />
+                <span>Editar Perfil</span>
+              </button>
+              {onLogout && (
+                <button className="pill-btn logout-profile-btn" onClick={onLogout} title="Cerrar sesión">
+                  <LogOut size={16} />
+                  <span>Salir</span>
+                </button>
+              )}
+            </div>
           </div>
 
           <div className="profile-names">

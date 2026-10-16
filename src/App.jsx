@@ -11,12 +11,36 @@ import PostDetailView from './components/PostDetailView';
 import SavedView from './components/SavedView';
 import CreatePostModal from './components/CreatePostModal';
 import CreateCollectionModal from './components/CreateCollectionModal';
+import LoginView from './components/LoginView';
 
 export default function App() {
+  const [currentUser, setCurrentUser] = useState(() => {
+    try {
+      const saved = localStorage.getItem('utendencias_user');
+      return saved ? JSON.parse(saved) : null;
+    } catch {
+      return null;
+    }
+  });
+
   const [activeTab, setActiveTab] = useState('inicio');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCollectionModalOpen, setIsCollectionModalOpen] = useState(false);
   const [selectedPost, setSelectedPost] = useState(null);
+
+  const handleLogin = (userData) => {
+    setCurrentUser(userData);
+    if (userData.rememberMe) {
+      localStorage.setItem('utendencias_user', JSON.stringify(userData));
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('utendencias_user');
+    setCurrentUser(null);
+    setSelectedPost(null);
+    setActiveTab('inicio');
+  };
 
   // Seed Data matching screenshot
   const [posts, setPosts] = useState([
@@ -126,6 +150,10 @@ export default function App() {
 
   const savedPosts = posts.filter((p) => p.isSaved);
 
+  if (!currentUser) {
+    return <LoginView onLogin={handleLogin} />;
+  }
+
   return (
     <div className="app-container">
       <div className="main-content-layout">
@@ -137,6 +165,8 @@ export default function App() {
             setSelectedPost(null);
           }}
           onOpenModal={() => setIsModalOpen(true)}
+          currentUser={currentUser}
+          onLogout={handleLogout}
         />
 
         {/* Center Main View */}
@@ -149,6 +179,7 @@ export default function App() {
                 posts={posts}
                 onAddPost={handleAddPost}
                 onPostClick={handlePostClick}
+                currentUser={currentUser}
               />
             )}
             {activeTab === 'explorar' && (
@@ -174,8 +205,10 @@ export default function App() {
             {activeTab === 'notificaciones' && <NotificationsView />}
             {activeTab === 'perfil' && (
               <ProfileView
-                userPosts={posts.filter((p) => p.handle === '@alumno_ut')}
+                userPosts={posts.filter((p) => p.handle === currentUser.handle || p.handle === '@alumno_ut')}
                 onPostClick={handlePostClick}
+                currentUser={currentUser}
+                onLogout={handleLogout}
               />
             )}
           </>
@@ -190,6 +223,7 @@ export default function App() {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onAddPost={handleAddPost}
+        currentUser={currentUser}
       />
 
       {/* Floating Create Collection Modal */}

@@ -1,7 +1,9 @@
-import React from 'react';
-import { Home, Compass, Bell, Bookmark, Plus, BookOpen, User, ChevronDown } from 'lucide-react';
+import React, { useState } from 'react';
+import { Home, Compass, Bell, Bookmark, Plus, BookOpen, User, LogOut, ChevronDown } from 'lucide-react';
 
-export default function Sidebar({ activeTab, setActiveTab, onOpenModal }) {
+export default function Sidebar({ activeTab, setActiveTab, onOpenModal, currentUser, onLogout }) {
+  const [showUserMenu, setShowUserMenu] = useState(false);
+
   const navItems = [
     { id: 'inicio', label: 'Inicio', icon: Home },
     { id: 'explorar', label: 'Explorar', icon: Compass },
@@ -10,6 +12,13 @@ export default function Sidebar({ activeTab, setActiveTab, onOpenModal }) {
     { id: 'notificaciones', label: 'Notificaciones', icon: Bell },
     { id: 'perfil', label: 'Mi Perfil', icon: User },
   ];
+
+  const user = currentUser || {
+    name: 'Mariano Calzadilla Alvarez',
+    handle: '@alumno_ut',
+    avatar: 'AL',
+    group: '7ITIID - G3',
+  };
 
   return (
     <aside className="left-sidebar">
@@ -51,14 +60,55 @@ export default function Sidebar({ activeTab, setActiveTab, onOpenModal }) {
       </button>
 
       {/* User Card at Bottom */}
-      <div className="sidebar-user-card" onClick={() => setActiveTab('perfil')}>
-        <div className="avatar">AL</div>
-        <div className="user-info">
-          <span className="username">@alumno_ut</span>
-          <span className="user-role">Estudiante activo</span>
+      <div className="sidebar-user-container">
+        {showUserMenu && (
+          <div className="sidebar-user-popup card">
+            <div className="user-popup-header">
+              <strong>{user.name}</strong>
+              <span>{user.handle}</span>
+            </div>
+            <button
+              className="user-popup-action"
+              onClick={() => {
+                setActiveTab('perfil');
+                setShowUserMenu(false);
+              }}
+            >
+              <User size={16} />
+              <span>Ver Perfil</span>
+            </button>
+            <button
+              className="user-popup-action text-danger"
+              onClick={() => {
+                setShowUserMenu(false);
+                if (onLogout) onLogout();
+              }}
+            >
+              <LogOut size={16} />
+              <span>Cerrar Sesión</span>
+            </button>
+          </div>
+        )}
+
+        <div className="sidebar-user-card" onClick={() => setShowUserMenu(!showUserMenu)}>
+          <div className="avatar">{user.avatar || 'UT'}</div>
+          <div className="user-info">
+            <span className="username">{user.handle}</span>
+            <span className="user-role">{user.group || 'Estudiante'}</span>
+          </div>
+          <button
+            className="sidebar-logout-quick"
+            onClick={(e) => {
+              e.stopPropagation();
+              if (onLogout) onLogout();
+            }}
+            title="Cerrar Sesión"
+          >
+            <LogOut size={16} />
+          </button>
         </div>
-        <ChevronDown size={18} className="chevron" />
       </div>
     </aside>
   );
 }
+

@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 import { Image, Calendar, Tag, BookOpen, Send } from 'lucide-react';
 
-export default function CreatePost({ onAddPost }) {
+export default function CreatePost({ onAddPost, currentUser }) {
   const [content, setContent] = useState('');
   const [topic, setTopic] = useState('#General');
   const [location, setLocation] = useState('');
   const [postType, setPostType] = useState('duda'); // duda, evento, recurso
+
+  const authorName = currentUser?.name || 'Alumno UT';
+  const authorHandle = currentUser?.handle || '@alumno_ut';
+  const authorAvatar = currentUser?.avatar || 'AL';
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -13,9 +17,9 @@ export default function CreatePost({ onAddPost }) {
 
     const newPost = {
       id: Date.now(),
-      author: 'Alumno UT',
-      handle: '@alumno_ut',
-      avatar: 'AL',
+      author: authorName,
+      handle: authorHandle,
+      avatar: authorAvatar,
       time: 'Ahora',
       content: content,
       topic: topic.startsWith('#') ? topic : `#${topic}`,
@@ -37,9 +41,9 @@ export default function CreatePost({ onAddPost }) {
   return (
     <div className="create-post-card card">
       <div className="create-post-header">
-        <div className="avatar">AL</div>
+        <div className="avatar">{authorAvatar}</div>
         <div className="author-meta">
-          <span className="author-handle">@alumno_ut</span>
+          <span className="author-handle">{authorHandle}</span>
           <span className="timestamp">ahora</span>
         </div>
       </div>

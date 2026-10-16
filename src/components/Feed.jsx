@@ -3,7 +3,7 @@ import { Settings } from 'lucide-react';
 import CreatePost from './CreatePost';
 import PostCard from './PostCard';
 
-export default function Feed({ posts, onAddPost, onPostClick }) {
+export default function Feed({ posts, onAddPost, onPostClick, currentUser }) {
   const [tab, setTab] = useState('para_ti');
 
   const filteredPosts = posts.filter((p) => {
@@ -37,7 +37,7 @@ export default function Feed({ posts, onAddPost, onPostClick }) {
       </div>
 
       {/* Post Creator Box */}
-      <CreatePost onAddPost={onAddPost} />
+      <CreatePost onAddPost={onAddPost} currentUser={currentUser} />
 
       {/* Posts List */}
       <div className="posts-list">

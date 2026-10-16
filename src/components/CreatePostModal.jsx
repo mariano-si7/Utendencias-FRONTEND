@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { X, Send, Tag, Calendar } from 'lucide-react';
 
-export default function CreatePostModal({ isOpen, onClose, onAddPost }) {
+export default function CreatePostModal({ isOpen, onClose, onAddPost, currentUser }) {
   const [content, setContent] = useState('');
   const [topic, setTopic] = useState('#General');
   const [location, setLocation] = useState('');
@@ -14,9 +14,9 @@ export default function CreatePostModal({ isOpen, onClose, onAddPost }) {
 
     const newPost = {
       id: Date.now(),
-      author: 'Alumno UT',
-      handle: '@alumno_ut',
-      avatar: 'AL',
+      author: currentUser?.name || 'Alumno UT',
+      handle: currentUser?.handle || '@alumno_ut',
+      avatar: currentUser?.avatar || 'AL',
       time: 'Ahora',
       content: content,
       topic: topic.startsWith('#') ? topic : `#${topic}`,
